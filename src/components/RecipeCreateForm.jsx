@@ -12,6 +12,15 @@ export default function RecipeForm({submitHandler, initialForm}) {
                 onChange={e => setForm({...form, recipe: e.target.value})
                 }
             />
+
+
+
+
+
+
+
+
+
             <label htmlFor='ingredients' className='inputLabel'> ingredients </label>
             <input
                 type='text'

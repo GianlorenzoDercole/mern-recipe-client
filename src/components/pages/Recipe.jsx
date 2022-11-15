@@ -5,7 +5,7 @@ import axios from 'axios'
 export default function Recipe() {
     const [recipe, setRecipe] = useState({})
     const { id } = useParams()
-    const [ingredient, setIngredient] = useState({
+    const [newIngredient, setNewIngredient] = useState({
         ingredient: '',
         amount: 5
     })
@@ -22,42 +22,49 @@ export default function Recipe() {
         }, [id])
 
 
-        console.log(ingredient)
+        console.log(newIngredient)
+        console.log('HERE',recipe.ingredients)
 
-        // const handleSubmit = async (e, ingredient, setIngredient) => {
-        //     e.preventDefault()
-        //     try {
-        //         const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/recipes`, form)
+        const handleIngredientSubmit =  async (e, newIngredient, recipe) => {
+            e.preventDefault()
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`)
+                console.log('RESPONSE', response.data.ingredients)
+                response.data.ingredients.push(newIngredient)
+                console.log('OOOOOOOO', response.data.ingredients)
+                const hi = response.data
+                await axios.put(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`, hi)
+                // .then(response => {
+                //     setNewIngredient({
+                //         ingredient: '',
+                //         amount: 5
+                //     })
+                // })
 
-        //         setRecipes([...recipes, response.data])
 
-        //         setForm({
-        //             recipe: '',
-        //             ingredients:[],
-        //             instructions: ''
-        //         })
-        //     } catch (err) {
-        //         console.log(err)
-        //     }
+            } catch (err) {
+                console.log(err)
+            }
+            // recipe.ingredients.push(newIngredient)
 
-        // }
+        }
     return (
 
         <div>
-            <form onSubmit={e => e.preventDefault()}>
+            <form onSubmit={e => handleIngredientSubmit(e, newIngredient)}>
                 <label htmlFor='ingredient' className='inputLabel'> new ingredient </label>
                 <input
                     type='text'
                     id='ingredient'
-                    value={ingredient.ingredient}
-                    onChange={e => setIngredient({...ingredient, ingredient:e.target.value})}
+                    value={newIngredient.ingredient}
+                    onChange={e => setNewIngredient({...newIngredient, ingredient:e.target.value})}
                 />
                 <div>
                     <button type='submit'>update</button>
                 </div>
             </form>
              <RecipeDetails recipe={recipe}/>
-             <h1>{ingredient.ingredient}</h1>
+             <h1>{newIngredient.ingredient}</h1>
         </div>
     )
 }
