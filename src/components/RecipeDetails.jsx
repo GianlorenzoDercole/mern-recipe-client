@@ -28,12 +28,13 @@ export default function RecipeDetails({ recipe }) {
     // })
 
 
-    
+
 
     const ingredientLinks = ingredients.map((ingredient, idx) => {
         return (
             <div key={`ingredients${idx}`}>
                 <h1>{ingredient.ingredient}</h1>
+                <h1>{ingredient.amount}</h1>
             </div>
         )
     })

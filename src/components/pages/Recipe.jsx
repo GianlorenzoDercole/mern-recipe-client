@@ -1,16 +1,15 @@
 import RecipeDetails from '../RecipeDetails'
 import { useState, useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Navigate } from 'react-router-dom'
 import axios from 'axios'
 export default function Recipe() {
     const [recipe, setRecipe] = useState({})
     const { id } = useParams()
+    const navigate = useNavigate()
     const [newIngredient, setNewIngredient] = useState({
         ingredient: '',
         amount: 5
     })
-
-
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`)
@@ -35,11 +34,13 @@ export default function Recipe() {
                 const hi = response.data
                 await axios.put(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`, hi)
                 // .then(response => {
-                //     setNewIngredient({
-                //         ingredient: '',
-                //         amount: 5
-                //     })
+                //     // setNewIngredient({
+                //     //     ingredient: '',
+                //     //     amount: 5
+                //     // })
+                //     // navigate(`/recipes/${id}`)
                 // })
+
 
 
             } catch (err) {
@@ -59,12 +60,21 @@ export default function Recipe() {
                     value={newIngredient.ingredient}
                     onChange={e => setNewIngredient({...newIngredient, ingredient:e.target.value})}
                 />
+                <label htmlFor='amount' className='inputLabel'> new ingredient </label>
+                <input
+                    type='number'
+                    id='amount'
+                    value={newIngredient.amount}
+                    onChange={e => setNewIngredient({...newIngredient, amount:e.target.value})}
+                />
                 <div>
                     <button type='submit'>update</button>
                 </div>
             </form>
              <RecipeDetails recipe={recipe}/>
-             <h1>{newIngredient.ingredient}</h1>
+             {/* <h1>{newIngredient.ingredient}</h1>
+             <h1>{newIngredient.amount}</h1> */}
+
         </div>
     )
 }

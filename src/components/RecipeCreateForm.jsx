@@ -21,14 +21,14 @@ export default function RecipeForm({submitHandler, initialForm}) {
 
 
 
-            <label htmlFor='ingredients' className='inputLabel'> ingredients </label>
+            {/* <label htmlFor='ingredients' className='inputLabel'> ingredients </label>
             <input
                 type='text'
                 id='ingredients'
                 value={form.ingredients}
                 onChange={e => setForm({...form, ingredients: e.target.value})
                 }
-            />
+            /> */}
 
             <label htmlFor='instructions' className='inputLabel'> instructions </label>
             <input
