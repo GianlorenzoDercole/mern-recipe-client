@@ -1,7 +1,8 @@
 import RecipeDetails from '../RecipeDetails'
 import { useState, useEffect } from 'react'
-import { useParams, useNavigate, Navigate } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
+// import IngredientCreateForm from '../IngredientCreateForm'
 export default function Recipe() {
     const [recipe, setRecipe] = useState({})
     const { id } = useParams()
@@ -12,6 +13,7 @@ export default function Recipe() {
     })
 
     useEffect(() => {
+
         axios.get(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`)
 
             .then(response => {
@@ -21,34 +23,41 @@ export default function Recipe() {
         }, [id])
 
 
-        console.log(newIngredient)
-        console.log('HERE',recipe.ingredients)
 
-        const handleIngredientSubmit =  async (e, newIngredient, recipe) => {
+
+        const handleIngredientSubmit =  async (e, newIngredient) => {
             e.preventDefault()
             try {
                 const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`)
                 console.log('RESPONSE', response.data.ingredients)
                 response.data.ingredients.push(newIngredient)
-                console.log('OOOOOOOO', response.data.ingredients)
-                const hi = response.data
-                await axios.put(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`, hi)
-                // .then(response => {
-                //     // setNewIngredient({
-                //     //     ingredient: '',
-                //     //     amount: 5
-                //     // })
-                //     // navigate(`/recipes/${id}`)
-                // })
 
+                const updatedRecipe = response.data
 
+                await axios.put(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`, updatedRecipe)
 
+                
             } catch (err) {
                 console.log(err)
             }
-            // recipe.ingredients.push(newIngredient)
-
+            // const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`)
+            // response.data.ingredients.push(newIngredient)
+            // const updatedRecipe = response.data
+            // axios.put(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`, updatedRecipe)
+            //     .then(response => {
+            //         setRecipe(response.data)
+            //     })
         }
+
+        const handleDelete = () => {
+            axios.delete(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`)
+                .then(response => {
+                    // navigate away from this page
+                    navigate('/')
+                })
+                .catch(console.warn)
+        }
+
     return (
 
         <div>
@@ -71,9 +80,11 @@ export default function Recipe() {
                     <button type='submit'>update</button>
                 </div>
             </form>
+
+            {/* <IngredientCreateForm submitHandler={handleIngredientSubmit}/> */}
+            <button onClick={handleDelete}>delete</button>
+
              <RecipeDetails recipe={recipe}/>
-             {/* <h1>{newIngredient.ingredient}</h1>
-             <h1>{newIngredient.amount}</h1> */}
 
         </div>
     )

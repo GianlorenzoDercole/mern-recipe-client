@@ -51,7 +51,7 @@ export default function Home() {
     })
     return (
         <div>
-            <h1>app</h1>
+            <h1>Recipe Book</h1>
             <RecipeForm
                 submitHandler={handleSubmit}
                 initialForm={{

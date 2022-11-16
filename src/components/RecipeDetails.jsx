@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 export default function RecipeDetails({ recipe }) {
     const [ingredients, setIngredients] = useState([])
     const { id } = useParams()
@@ -17,7 +17,7 @@ export default function RecipeDetails({ recipe }) {
 
         }
         fetchIngredients()
-    }, [])
+    }, [id])
 
     // const ingredientLinks = ingredients.map((ingredient, idx) => {
     //     return (
@@ -33,8 +33,11 @@ export default function RecipeDetails({ recipe }) {
     const ingredientLinks = ingredients.map((ingredient, idx) => {
         return (
             <div key={`ingredients${idx}`}>
-                <h1>{ingredient.ingredient}</h1>
-                <h1>{ingredient.amount}</h1>
+                <div>
+                    <h1>{ingredient.ingredient}: {ingredient.amount}</h1>
+
+                </div>
+
             </div>
         )
     })
