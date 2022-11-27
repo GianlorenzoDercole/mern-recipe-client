@@ -2,51 +2,63 @@ import RecipeDetails from '../RecipeDetails'
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
-// import IngredientCreateForm from '../IngredientCreateForm'
+import IngredientCreateForm from '../IngredientCreateForm'
 export default function Recipe() {
     const [recipe, setRecipe] = useState({})
     const { id } = useParams()
     const navigate = useNavigate()
-    const [newIngredient, setNewIngredient] = useState({
-        ingredient: '',
-        amount: 5
-    })
 
+    // const [newIngredient, setNewIngredient] = useState({
+    //     ingredient: '',
+    //     amount: 5
+    // })
+    
     useEffect(() => {
 
-        axios.get(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`)
 
-            .then(response => {
-                setRecipe(response.data)
-            })
-
-        }, [id])
-
-
-
-
-        const handleIngredientSubmit =  async (e, newIngredient) => {
-            e.preventDefault()
+        const fetchIngredients = async () => {
             try {
                 const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`)
-                console.log('RESPONSE', response.data.ingredients)
-                response.data.ingredients.push(newIngredient)
-
-                const updatedRecipe = response.data
-
-                await axios.put(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`, updatedRecipe)
-
-                
+                setRecipe(response.data)
             } catch (err) {
                 console.log(err)
             }
-            // const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`)
-            // response.data.ingredients.push(newIngredient)
-            // const updatedRecipe = response.data
-            // axios.put(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`, updatedRecipe)
-            //     .then(response => {
-            //         setRecipe(response.data)
-            //     })
+        }
+        fetchIngredients()
+    }, [id] )
+
+
+        const handleIngredientSubmit =  async (e, newIngredient, setNewIngredient) => {
+            e.preventDefault()
+            // try {
+            //     const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`)
+            //     console.log('RESPONSE', response.data.ingredients)
+            //     response.data.ingredients.push(newIngredient)
+
+            //     const updatedRecipe = response.data
+
+            //     await axios.put(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`, updatedRecipe)
+
+            //     setRecipe({...updatedRecipe })
+            //     console.log('HERE',recipe)
+            //     setNewIngredient({ingredient: '',
+            //     amount: 5})
+
+            // } catch (err) {
+            //     console.log(err)
+            // }
+            const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`)
+            response.data.ingredients.push(newIngredient)
+            const updatedRecipe = response.data
+            console.log('HERE', updatedRecipe)
+            setRecipe({ingredients: updatedRecipe.ingredients})
+            console.log('OOOOO', recipe)
+            axios.put(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`, updatedRecipe)
+                .then(response => {
+                    console.log('UUUUUU', response.data)
+
+
+                })
         }
 
         const handleDelete = () => {
@@ -61,7 +73,7 @@ export default function Recipe() {
     return (
 
         <div>
-            <form onSubmit={e => handleIngredientSubmit(e, newIngredient)}>
+            {/* <form onSubmit={e => handleIngredientSubmit(e, newIngredient)}>
                 <label htmlFor='ingredient' className='inputLabel'> new ingredient </label>
                 <input
                     type='text'
@@ -77,15 +89,24 @@ export default function Recipe() {
                     onChange={e => setNewIngredient({...newIngredient, amount:e.target.value})}
                 />
                 <div>
-                    <button type='submit'>update</button>
+                    <button onClick={() => setShowForm(!showForm)} type='submit'>update</button>
                 </div>
-            </form>
 
-            {/* <IngredientCreateForm submitHandler={handleIngredientSubmit}/> */}
+            </form> */}
+
+            <IngredientCreateForm submitHandler={handleIngredientSubmit}/>
             <button onClick={handleDelete}>delete</button>
 
              <RecipeDetails recipe={recipe}/>
 
         </div>
     )
+
 }
+
+
+
+
+/////////////////////////////////////
+
+// ///////////////////////////////////
