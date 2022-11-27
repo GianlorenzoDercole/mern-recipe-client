@@ -7,15 +7,15 @@ export default function IngredientCreateForm({submitHandler}) {
         amount: 5
     })
     return (
-        <form onSubmit={e => submitHandler(e, newIngredient)}>
-        <label htmlFor='ingredient' className='inputLabel'> new ingredient </label>
+        <form onSubmit={e => submitHandler(e, newIngredient, setNewIngredient)}>
+        <label htmlFor='ingredient' className='inputLabel'> ingredient </label>
         <input
             type='text'
             id='ingredient'
             value={newIngredient.ingredient}
             onChange={e => setNewIngredient({...newIngredient, ingredient:e.target.value})}
         />
-        <label htmlFor='amount' className='inputLabel'> new ingredient </label>
+        <label htmlFor='amount' className='inputLabel'> amount </label>
         <input
             type='number'
             id='amount'

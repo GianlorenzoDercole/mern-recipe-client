@@ -12,7 +12,6 @@ export default function Recipe() {
     //     ingredient: '',
     //     amount: 5
     // })
-    
     useEffect(() => {
 
 
@@ -30,35 +29,38 @@ export default function Recipe() {
 
         const handleIngredientSubmit =  async (e, newIngredient, setNewIngredient) => {
             e.preventDefault()
-            // try {
-            //     const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`)
-            //     console.log('RESPONSE', response.data.ingredients)
-            //     response.data.ingredients.push(newIngredient)
+            try {
+                const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`)
+                console.log('RESPONSE', response.data.ingredients)
+                response.data.ingredients.push(newIngredient)
 
-            //     const updatedRecipe = response.data
+                const updatedRecipe = response.data
 
-            //     await axios.put(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`, updatedRecipe)
+                await axios.put(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`, updatedRecipe)
 
-            //     setRecipe({...updatedRecipe })
-            //     console.log('HERE',recipe)
-            //     setNewIngredient({ingredient: '',
-            //     amount: 5})
+                const updatedResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`)
 
-            // } catch (err) {
-            //     console.log(err)
-            // }
-            const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`)
-            response.data.ingredients.push(newIngredient)
-            const updatedRecipe = response.data
-            console.log('HERE', updatedRecipe)
-            setRecipe({ingredients: updatedRecipe.ingredients})
-            console.log('OOOOO', recipe)
-            axios.put(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`, updatedRecipe)
-                .then(response => {
-                    console.log('UUUUUU', response.data)
+                setRecipe({recipe: recipe.recipe, instructions: recipe.instructions, ingredients: updatedResponse.data.ingredients })
 
+                console.log('HERE',recipe)
+                setNewIngredient({ingredient: '',
+                amount: 5})
 
-                })
+            } catch (err) {
+                console.log(err)
+            }
+            // const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`)
+            // response.data.ingredients.push(newIngredient)
+            // const updatedRecipe = response.data
+            // console.log('HERE', updatedRecipe)
+            // setRecipe({ingredients: updatedRecipe.ingredients})
+            // console.log('OOOOO', recipe)
+            // axios.put(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`, updatedRecipe)
+            //     .then(response => {
+
+            //         setRecipe(response.data)
+
+            //     })
         }
 
         const handleDelete = () => {

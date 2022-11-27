@@ -34,7 +34,7 @@ export default function RecipeDetails({ recipe }) {
         return (
             <div key={`ingredients${idx}`}>
                 <div>
-                    <h1>{ingredient.ingredient}: {ingredient.amount}</h1>
+                    <h3>{ingredient.ingredient}: {ingredient.amount}</h3>
 
                 </div>
 
@@ -46,7 +46,8 @@ export default function RecipeDetails({ recipe }) {
     return (
         <div>
             <h1>{recipe.recipe}</h1>
-            <h1>{recipe.instructions}</h1>
+            <h2>instructions: {recipe.instructions}</h2>
+            <h2>Ingredients</h2>
             {/* <h1>{recipe.ingredients[0]}</h1> */}
             {ingredientLinks}
 
