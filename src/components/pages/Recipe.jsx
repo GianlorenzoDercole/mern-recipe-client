@@ -10,7 +10,7 @@ export default function Recipe() {
 
     // const [newIngredient, setNewIngredient] = useState({
     //     ingredient: '',
-    //     amount: 5
+    //     amount: 1
     // })
     useEffect(() => {
 
@@ -24,10 +24,25 @@ export default function Recipe() {
             }
         }
         fetchIngredients()
-    }, [id] )
+    } , [id])
 
+    const [information, setInformation] = useState('')
+    // const [ingredientName, setIngredientName] = useState('milk')
+    // fetch the API data when the component mounts for the first time
+    useEffect(() => {
+        // fetch data
+        fetch(`https://api.edamam.com/api/food-database/v2/parser?app_id=01a47d3c&app_key=%20e804c10482b38a9d08949ceb033d51a2&ingr=milk&nutrition-type=cooking`)
+        .then(res => res.json())
+            // console.log(response.json())
+        .then(information => {
+            console.log(information.parsed[0].food.nutrients.ENERC_KCAL)
+            setInformation(information.text)
 
-        const handleIngredientSubmit =  async (e, newIngredient, setNewIngredient) => {
+        })
+
+    }, [])
+
+        const handleIngredientSubmit =  async (e, newIngredient, setNewIngredient ) => {
             e.preventDefault()
             try {
                 const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`)
@@ -35,16 +50,16 @@ export default function Recipe() {
                 response.data.ingredients.push(newIngredient)
 
                 const updatedRecipe = response.data
-
+                console.log('UPDATED RESPONSE', updatedRecipe)
                 await axios.put(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`, updatedRecipe)
 
-                const updatedResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`)
+                // const updatedResponse = await axios.get(`${process.env.REACT_APP_SERVER_URL}/recipes/${id}`)
 
-                setRecipe({recipe: recipe.recipe, instructions: recipe.instructions, ingredients: updatedResponse.data.ingredients })
+                // setRecipe({recipe: recipe.recipe, instructions: recipe.instructions, ingredients: updatedResponse.data.ingredients })
 
-                console.log('HERE',recipe)
+                // console.log('UPDATED RECIPE',recipe)
                 setNewIngredient({ingredient: '',
-                amount: 5})
+                amount: 1})
 
             } catch (err) {
                 console.log(err)
@@ -73,7 +88,6 @@ export default function Recipe() {
         }
 
     return (
-
         <div>
             {/* <form onSubmit={e => handleIngredientSubmit(e, newIngredient)}>
                 <label htmlFor='ingredient' className='inputLabel'> new ingredient </label>
@@ -95,11 +109,11 @@ export default function Recipe() {
                 </div>
 
             </form> */}
-
-            <IngredientCreateForm submitHandler={handleIngredientSubmit}/>
+            <IngredientCreateForm submitHandler={handleIngredientSubmit} initialNewIngredient={{ingredient: '', amount: 1}}/>
             <button onClick={handleDelete}>delete</button>
 
              <RecipeDetails recipe={recipe}/>
+             {information}
 
         </div>
     )
@@ -107,7 +121,7 @@ export default function Recipe() {
 }
 
 
-
+////////////////////////////////////
 
 /////////////////////////////////////
 

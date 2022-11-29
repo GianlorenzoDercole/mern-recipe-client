@@ -1,11 +1,8 @@
 import { useState } from 'react'
 
 
-export default function IngredientCreateForm({submitHandler}) {
-    const [newIngredient, setNewIngredient] = useState({
-        ingredient: '',
-        amount: 5
-    })
+export default function IngredientCreateForm({submitHandler, initialNewIngredient}) {
+    const [newIngredient, setNewIngredient] = useState(initialNewIngredient)
     return (
         <form onSubmit={e => submitHandler(e, newIngredient, setNewIngredient)}>
         <label htmlFor='ingredient' className='inputLabel'> ingredient </label>
@@ -34,3 +31,4 @@ export default function IngredientCreateForm({submitHandler}) {
 
 
 ///////////////////////////////////////////////
+////////////////
